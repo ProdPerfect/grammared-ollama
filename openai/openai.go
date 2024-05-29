@@ -50,6 +50,7 @@ type Usage struct {
 
 type ResponseFormat struct {
 	Type string `json:"type"`
+	Schema *string `json:"schema"`
 }
 
 type ChatCompletionRequest struct {
@@ -202,6 +203,7 @@ func fromRequest(r ChatCompletionRequest) api.ChatRequest {
 	var format string
 	if r.ResponseFormat != nil && r.ResponseFormat.Type == "json_object" {
 		format = "json"
+		options["json_schema"] = *r.ResponseFormat.Schema
 	}
 
 	if r.JsonSchema != nil {
