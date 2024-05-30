@@ -65,6 +65,7 @@ type ChatCompletionRequest struct {
 	PresencePenalty  *float64        `json:"presence_penalty_penalty"`
 	TopP             *float64        `json:"top_p"`
 	ResponseFormat   *ResponseFormat `json:"response_format"`
+	Grammar          *string         `json:"grammar"`
 	NumCtx           *int            `json:"num_ctx"`
 }
 
@@ -202,7 +203,10 @@ func fromRequest(r ChatCompletionRequest) api.ChatRequest {
 	var format string
 	if r.ResponseFormat != nil && r.ResponseFormat.Type == "json_object" {
 		format = "json"
-		options["json_schema"] = *r.ResponseFormat.Schema
+	}
+
+	if r.Grammar != nil {
+		options["grammar"] = *r.Grammar
 	}
 
 	if r.NumCtx != nil {
